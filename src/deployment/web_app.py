@@ -1331,9 +1331,9 @@ def main():
     
     # Start server
     logger.info(f"Starting server on http://{args.host}:{args.port}")
-    print(f"\n🌐 Server starting on: http://localhost:{args.port}")
-    print(f"📱 Access from network: http://{args.host}:{args.port}")
-    print("⏹️  Press Ctrl+C to stop the server\n")
+    print(f"\nServer starting on: http://localhost:{args.port}")
+    print(f"Access from network: http://{args.host}:{args.port}")
+    print("Press Ctrl+C to stop the server\n")
     
     def open_browser():
         time.sleep(1.5)

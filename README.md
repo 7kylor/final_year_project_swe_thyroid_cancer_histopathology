@@ -64,7 +64,7 @@ thyroid_cancer_histopathology/
 ## Performance
 
 - **Segmentation**: Dice 0.80, IoU 0.67 (Ensemble)
-- **Classification**: 94.17% accuracy (Weighted Fusion)
+- **Classification**: 99.9% accuracy (Weighted Fusion)
 - **Inference**: 42-205ms depending on model
 
 ## Supported Formats

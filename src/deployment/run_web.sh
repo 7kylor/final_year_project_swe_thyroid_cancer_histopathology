@@ -79,23 +79,21 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Check if port is available and find alternative if needed
-if [ "$USER_SPECIFIED_PORT" = true ]; then
-    if check_port $PORT; then
-        echo "Error: Port $PORT is already in use."
-        echo "Please specify a different port with -p or --port option."
-        exit 1
-    fi
-else
-    if check_port $PORT; then
+if check_port $PORT; then
+    if [ "$USER_SPECIFIED_PORT" = true ]; then
+        echo "Port $PORT is in use, finding alternative..."
+        AVAILABLE_PORT=$(find_available_port $PORT)
+    else
         echo "Port $PORT is in use, finding alternative..."
         AVAILABLE_PORT=$(find_available_port $DEFAULT_PORT)
-        if [ $? -eq 0 ]; then
-            PORT=$AVAILABLE_PORT
-            echo "Using port $PORT instead."
-        else
-            echo "Error: Could not find an available port."
-            exit 1
-        fi
+    fi
+    
+    if [ $? -eq 0 ]; then
+        PORT=$AVAILABLE_PORT
+        echo "Using port $PORT instead."
+    else
+        echo "Error: Could not find an available port."
+        exit 1
     fi
 fi
 

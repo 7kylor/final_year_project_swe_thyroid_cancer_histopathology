@@ -54,19 +54,16 @@ REM Function to check if port is available (Windows)
 echo Checking if port %PORT% is available...
 netstat -an | findstr ":%PORT% " | findstr "LISTENING" >nul 2>&1
 if %errorlevel% equ 0 (
+    echo Port %PORT% is in use, trying alternative ports...
     if "%USER_SPECIFIED_PORT%"=="true" (
-        echo Error: Port %PORT% is already in use.
-        echo Please specify a different port with -p or --port option.
+        call :find_available_port %PORT%
+    ) else (
+        call :find_available_port %DEFAULT_PORT%
+    )
+    if !errorlevel! neq 0 (
+        echo Error: Could not find an available port.
         pause
         exit /b 1
-    ) else (
-        echo Port %PORT% is in use, trying alternative ports...
-        call :find_available_port %DEFAULT_PORT%
-        if !errorlevel! neq 0 (
-            echo Error: Could not find an available port.
-            pause
-            exit /b 1
-        )
     )
 ) else (
     echo Port %PORT% is available.
