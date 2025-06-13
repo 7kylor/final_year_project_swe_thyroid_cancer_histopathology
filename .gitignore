@@ -316,6 +316,8 @@ docs/xml/
 
 # Utility scripts and tools
 utils/
+src/deployment/test_port_detection.py
+ 
 
 # Python cache and coverage
 .pytest_cache/

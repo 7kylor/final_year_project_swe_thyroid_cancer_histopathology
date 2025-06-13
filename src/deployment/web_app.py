@@ -1279,15 +1279,48 @@ def create_templates():
     with open(os.path.join(template_dir, 'progress.html'), 'w') as f:
         f.write(progress_html)
 
+def check_port_available(port, host='127.0.0.1'):
+    """Check if a port is available"""
+    import socket
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        try:
+            sock.bind((host, port))
+            return True
+        except OSError:
+            return False
+
+def find_available_port(start_port, max_attempts=50):
+    """Find an available port starting from start_port"""
+    for port in range(start_port, start_port + max_attempts):
+        if check_port_available(port):
+            return port
+    return None
+
 def main():
     """Main entry point"""
     import argparse
     
     parser = argparse.ArgumentParser(description='Comprehensive Thyroid Cancer Analysis Web App')
-    parser.add_argument('--port', type=int, default=5001, help='Port to run the server on')
+    parser.add_argument('--port', type=int, default=5001, help='Port to run the server on (will auto-detect if not available)')
     parser.add_argument('--host', type=str, default='0.0.0.0', help='Host to bind the server to')
     parser.add_argument('--debug', action='store_true', help='Run in debug mode')
+    parser.add_argument('--force-port', action='store_true', help='Force use of specified port (fail if not available)')
     args = parser.parse_args()
+    
+    # Check port availability and find alternative if needed
+    if not check_port_available(args.port):
+        if args.force_port:
+            logger.error(f"Port {args.port} is already in use and --force-port was specified")
+            sys.exit(1)
+        else:
+            logger.warning(f"Port {args.port} is already in use, finding alternative...")
+            available_port = find_available_port(args.port)
+            if available_port:
+                logger.info(f"Using port {available_port} instead")
+                args.port = available_port
+            else:
+                logger.error(f"Could not find an available port starting from {args.port}")
+                sys.exit(1)
     
     # Create templates
     create_templates()
@@ -1298,6 +1331,9 @@ def main():
     
     # Start server
     logger.info(f"Starting server on http://{args.host}:{args.port}")
+    print(f"\n🌐 Server starting on: http://localhost:{args.port}")
+    print(f"📱 Access from network: http://{args.host}:{args.port}")
+    print("⏹️  Press Ctrl+C to stop the server\n")
     
     def open_browser():
         time.sleep(1.5)
@@ -1305,7 +1341,14 @@ def main():
     
     threading.Thread(target=open_browser).start()
     
-    app.run(host=args.host, port=args.port, debug=args.debug, threaded=True)
+    try:
+        app.run(host=args.host, port=args.port, debug=args.debug, threaded=True)
+    except OSError as e:
+        if "Address already in use" in str(e):
+            logger.error(f"Port {args.port} is already in use. Please try a different port or stop the conflicting service.")
+        else:
+            logger.error(f"Failed to start server: {e}")
+        sys.exit(1)
 
 if __name__ == '__main__':
     main() 

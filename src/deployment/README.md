@@ -7,12 +7,21 @@ Thyroid Cancer Histopathology Analysis deployment components.
 ### Web Interface
 
 ```bash
+# Auto-detects available port starting from 5001
 python web_app.py
+
+# Or specify a port manually
+python web_app.py --port 8080
+
+# Using the launcher scripts (recommended)
+./run_web.sh          # Unix/Linux/macOS
+run_web.bat            # Windows
 ```
 
-- Runs at `http://localhost:5001`
+- Automatically finds available port (5001, 5002, 5003, etc.)
 - Drag-and-drop image upload
 - Real-time progress tracking
+- Browser opens automatically
 
 ### Command Line
 

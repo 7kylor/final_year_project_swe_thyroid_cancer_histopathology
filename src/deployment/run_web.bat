@@ -33,14 +33,44 @@ if errorlevel 1 (
 )
 
 REM Set default port
-set PORT=5001
+set DEFAULT_PORT=5001
+set PORT=%DEFAULT_PORT%
+set USER_SPECIFIED_PORT=false
 
 REM Parse command line arguments
-if "%1"=="-p" set PORT=%2
-if "%1"=="--port" set PORT=%2
+if "%1"=="-p" (
+    set PORT=%2
+    set USER_SPECIFIED_PORT=true
+)
+if "%1"=="--port" (
+    set PORT=%2
+    set USER_SPECIFIED_PORT=true
+)
 if "%1"=="-h" goto :help
 if "%1"=="--help" goto :help
 if "%1"=="/?" goto :help
+
+REM Function to check if port is available (Windows)
+echo Checking if port %PORT% is available...
+netstat -an | findstr ":%PORT% " | findstr "LISTENING" >nul 2>&1
+if %errorlevel% equ 0 (
+    if "%USER_SPECIFIED_PORT%"=="true" (
+        echo Error: Port %PORT% is already in use.
+        echo Please specify a different port with -p or --port option.
+        pause
+        exit /b 1
+    ) else (
+        echo Port %PORT% is in use, trying alternative ports...
+        call :find_available_port %DEFAULT_PORT%
+        if !errorlevel! neq 0 (
+            echo Error: Could not find an available port.
+            pause
+            exit /b 1
+        )
+    )
+) else (
+    echo Port %PORT% is available.
+)
 
 echo Starting web server on port %PORT%...
 echo The browser will open automatically in a few seconds.
@@ -52,10 +82,30 @@ REM Run the web application
 python web_app.py --port %PORT%
 goto :end
 
+:find_available_port
+setlocal enabledelayedexpansion
+set start_port=%1
+set /a max_port=%start_port% + 50
+
+for /l %%i in (%start_port%,1,%max_port%) do (
+    netstat -an | findstr ":%%i " | findstr "LISTENING" >nul 2>&1
+    if !errorlevel! neq 0 (
+        set PORT=%%i
+        echo Using port %%i instead.
+        endlocal & set PORT=%PORT%
+        exit /b 0
+    )
+)
+
+echo Could not find available port in range %start_port%-%max_port%
+endlocal
+exit /b 1
+goto :end
+
 :help
 echo Usage: %0 [options]
 echo Options:
-echo   -p, --port PORT    Port to run the server on (default: 5001)
+echo   -p, --port PORT    Port to run the server on (default: auto-detect starting from 5001)
 echo   -h, --help, /?     Show this help message
 
 :end 
