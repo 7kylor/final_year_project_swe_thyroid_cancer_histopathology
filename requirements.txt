@@ -1,0 +1,136 @@
+# Core ML and Deep Learning
+torch>=1.9.0
+torchvision>=0.10.0
+torchaudio>=0.9.0
+transformers>=4.20.0
+timm>=0.6.0
+
+# Computer Vision and Image Processing
+opencv-python>=4.5.0
+Pillow>=8.3.0
+scikit-image>=0.18.0
+albumentations>=1.2.0
+imageio>=2.9.0
+
+# Scientific Computing
+numpy>=1.21.0
+scipy>=1.7.0
+pandas>=1.3.0
+matplotlib>=3.4.0
+seaborn>=0.11.0
+
+# Machine Learning
+scikit-learn>=1.0.0
+xgboost>=1.5.0
+lightgbm>=3.3.0
+
+# Web Framework and API
+Flask>=2.0.0
+Flask-CORS>=3.0.10
+requests>=2.25.0
+gunicorn>=20.1.0
+
+# Progress and Logging
+tqdm>=4.62.0
+loguru>=0.5.3
+
+# Configuration and Utilities
+PyYAML>=5.4.0
+python-dotenv>=0.19.0
+click>=8.0.0
+argparse
+
+# Visualization and Reporting
+plotly>=5.3.0
+bokeh>=2.4.0
+jinja2>=3.0.0
+
+# Medical Image Processing
+pydicom>=2.2.0
+nibabel>=3.2.0
+
+# Performance and Optimization
+numba>=0.54.0
+joblib>=1.1.0
+
+# Development and Testing
+pytest>=6.2.0
+pytest-cov>=2.12.0
+black>=21.7.0
+flake8>=3.9.0
+isort>=5.9.0
+
+# Jupyter and Notebooks
+jupyter>=1.0.0
+ipykernel>=6.0.0
+ipywidgets>=7.6.0
+
+# Additional utilities
+psutil>=5.8.0
+pathlib2>=2.3.6
+glob2>=0.7
+
+# Optional GPU acceleration
+# Uncomment if using CUDA
+# torch-audio>=0.9.0+cu111
+# torch-vision>=0.10.0+cu111
+
+# For advanced features
+tensorboard>=2.7.0
+wandb>=0.12.0
+
+# File handling
+h5py>=3.3.0
+zarr>=2.8.0
+
+# Statistical analysis
+statsmodels>=0.12.0
+pingouin>=0.4.0
+
+# Memory optimization
+memory-profiler>=0.58.0
+
+# Web scraping (if needed for data collection)
+beautifulsoup4>=4.9.0
+selenium>=3.141.0
+
+# Database (if needed)
+sqlalchemy>=1.4.0
+sqlite3
+
+# Async support
+aiohttp>=3.7.0
+asyncio
+
+# Image format support
+imagecodecs>=2021.6.8
+tifffile>=2021.7.2
+
+# Color space conversions
+colorspacious>=1.1.2
+
+# Advanced image processing
+mahotas>=1.4.11
+SimpleITK>=2.1.0
+
+# Network utilities
+urllib3>=1.26.0
+certifi>=2021.5.25
+
+# Date and time
+python-dateutil>=2.8.0
+pytz>=2021.1
+
+# System monitoring
+psutil>=5.8.0
+
+# Configuration management
+configparser>=5.0.0
+toml>=0.10.0
+
+# Parallel processing
+multiprocessing-logging>=0.3.0
+concurrent-futures>=3.1.1 
+
+
+# note: the segmentation and classification models are not all included in this requirements.txt file
